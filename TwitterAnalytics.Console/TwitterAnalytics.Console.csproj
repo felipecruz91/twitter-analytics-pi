@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TwitterAnalytics.BusinessLogic\TwitterAnalytics.BusinessLogic.csproj" />
+    <ProjectReference Include="..\TwitterAnalytics.DataAccess\TwitterAnalytics.DataAccess.csproj" />
+  </ItemGroup>
+
+</Project>
