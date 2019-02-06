@@ -14,9 +14,6 @@ namespace TwitterAnalytics.BusinessLogic
 
         public void ProcessTweet(string track, MatchedTweetReceivedEventArgs args)
         {
-            //Console.WriteLine($"A tweet containing '{track}' has been found; the tweet is '" + args.Tweet +
-            //                  "'");
-
             _tweetsRepository.Save(args);
         }
     }

@@ -1,5 +1,6 @@
 ﻿using System;
-using InfluxDB.Collector.Diagnostics;
+using Microsoft.Extensions.Configuration;
+using Tweetinvi.Models;
 using TwitterAnalytics.BusinessLogic;
 using TwitterAnalytics.DataAccess;
 
@@ -8,45 +9,82 @@ namespace TwitterAnalytics.Console
     internal class Program
     {
         private const string Db = "TwitterAnalytics";
+        private static IConfigurationRoot _configuration;
 
         private static void Main(string[] args)
         {
             System.Console.WriteLine($"[{DateTime.Now}] - Starting program...");
 
-            CollectorLog.RegisterErrorHandler((message, exception) =>
-            {
-                System.Console.Error.WriteLine($"[{DateTime.Now}] - {message}: {exception}");
-            });
+            var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            System.Console.WriteLine($"[{DateTime.Now}] - Environment: {environmentName}");
+
+            var builder = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json", true, true)
+                .AddJsonFile($"appsettings.{environmentName}.json", true, true);
+
+            _configuration = builder.Build();
 
             try
             {
-                var influxDbServerAddress = Environment.GetEnvironmentVariable("influxdb-server-addr");
-                if (string.IsNullOrEmpty(influxDbServerAddress))
-                {
-                    throw new Exception(
-                        "Influx DB server address not set. Set the env. variable 'influxdb-server-addr' following the format 'http://IP_ADDRESS:PORT'.");
-                }
-
+                // Set the InfluxDB metrics collector
+                var influxDbServerAddress = GetInfluxDbServerAddress();
                 var repository = new TweetsRepository(influxDbServerAddress, Db, TimeSpan.FromSeconds(2));
-                System.Console.WriteLine(
-                    $"[{DateTime.Now}] - Established connection with Influx DB server at '{influxDbServerAddress}'.");
 
-                var streamFactory = new StreamFactory(new TweetProcessor(repository));
-                var trackingWord = Environment.GetEnvironmentVariable("trackingWord");
-                if (string.IsNullOrEmpty(trackingWord))
-                {
-                    throw new Exception("Tracking word not set. Set the env. variable 'trackingWord'.");
-                }
-
-                streamFactory.StartStream(trackingWord);
-
-                System.Console.WriteLine(
-                    $"[{DateTime.Now}] - Started listening for tweets that contains the keyword '{trackingWord}'...");
+                // Start the Twitter Stream
+                var credentials = GetTwitterCredentials();
+                var streamFactory = new StreamFactory(new TweetProcessor(repository), credentials);
+                var keyword = GetKeyword();
+                streamFactory.StartStream(keyword);
             }
             catch (Exception e)
             {
                 System.Console.Error.WriteLine($"[{DateTime.Now}] - Exception: {e.Message}");
             }
+        }
+
+        private static string GetKeyword()
+        {
+            var keyword = Environment.GetEnvironmentVariable("keyword");
+            if (string.IsNullOrEmpty(keyword))
+            {
+                throw new Exception("Tracking word not set. Set the env. variable 'keyword'.");
+            }
+
+            return keyword;
+        }
+
+        /// <summary>
+        ///     Get the Influx DB Server address from an environment variable.
+        /// </summary>
+        /// <returns>
+        ///     The Influx DB server address in the format:
+        ///     http://<YOUR_INFLUX_DB_IP_ADDR>:<INFLUX_DB_PORT>
+        /// </returns>
+        private static string GetInfluxDbServerAddress()
+        {
+            var influxDbServerAddress = _configuration["InfluxDB:ServerAddress"];
+            if (string.IsNullOrEmpty(influxDbServerAddress))
+            {
+                throw new Exception(
+                    "Influx DB server address not set. Set the env. variable 'influxdb-server-addr' following the format 'http://IP_ADDRESS:PORT'.");
+            }
+
+            return influxDbServerAddress;
+        }
+
+        /// <summary>
+        ///     Get the Twitter credentials from environment variables.
+        ///     Set up your own credentials at https://apps.twitter.com.
+        /// </summary>
+        /// <returns></returns>
+        private static ITwitterCredentials GetTwitterCredentials()
+        {
+            var consumerKey = _configuration["Twitter:ConsumerKey"];
+            var consumerSecret = _configuration["Twitter:ConsumerSecret"];
+            var accessToken = _configuration["Twitter:AccessToken"];
+            var accessTokenSecret = _configuration["Twitter:AccessTokenSecret"];
+
+            return new TwitterCredentials(consumerKey, consumerSecret, accessToken, accessTokenSecret);
         }
     }
 }

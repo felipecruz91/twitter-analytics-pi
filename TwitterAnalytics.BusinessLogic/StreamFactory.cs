@@ -1,4 +1,6 @@
-﻿using Tweetinvi;
+﻿using System;
+using Tweetinvi;
+using Tweetinvi.Models;
 
 namespace TwitterAnalytics.BusinessLogic
 {
@@ -6,25 +8,21 @@ namespace TwitterAnalytics.BusinessLogic
     {
         private readonly ITweetProcessor _tweetProcessor;
 
-        public StreamFactory(ITweetProcessor tweetProcessor)
+        public StreamFactory(ITweetProcessor tweetProcessor, ITwitterCredentials credentials)
         {
             _tweetProcessor = tweetProcessor;
+            Auth.SetUserCredentials(credentials.ConsumerKey, credentials.ConsumerSecret,
+                credentials.AccessToken, credentials.AccessTokenSecret);
         }
 
-        public void StartStream(string track)
+        public void StartStream(string keyword)
         {
-            // Set up your credentials (https://apps.twitter.com)
-            const string consumerKey = Environment.GetEnvironmentVariable("TWITTER_CONSUMER_KEY");
-            const string consumerSecret = Environment.GetEnvironmentVariable("TWITTER_CONSUMER_SECRET");
-            const string userAccessToken = Environment.GetEnvironmentVariable("TWITTER_USER_ACCESS_TOKEN");
-            const string userAccessSecret = Environment.GetEnvironmentVariable("TWITTER_USER_ACCESS_SECRET");
-
-            Auth.SetUserCredentials(consumerKey, consumerSecret,
-                userAccessToken, userAccessSecret);
+            Console.WriteLine(
+                $"[{DateTime.Now}] - Starting listening for tweets that contains the keyword '{keyword}'...");
 
             var stream = Stream.CreateFilteredStream();
-            stream.AddTrack(track);
-            stream.MatchingTweetReceived += (sender, args) => { _tweetProcessor.ProcessTweet(track, args); };
+            stream.AddTrack(keyword);
+            stream.MatchingTweetReceived += (sender, args) => { _tweetProcessor.ProcessTweet(keyword, args); };
             stream.StartStreamMatchingAllConditions();
         }
     }

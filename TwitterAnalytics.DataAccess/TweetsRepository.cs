@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using InfluxDB.Collector;
+using InfluxDB.Collector.Diagnostics;
 using Tweetinvi.Events;
 
 namespace TwitterAnalytics.DataAccess
@@ -11,10 +12,17 @@ namespace TwitterAnalytics.DataAccess
 
         public TweetsRepository(string serverBaseAddress, string database, TimeSpan interval)
         {
+            Console.WriteLine($"[{DateTime.Now}] - Influx DB server address: '{serverBaseAddress}'.");
+
             Collector = new CollectorConfiguration()
                 .Batch.AtInterval(interval)
                 .WriteTo.InfluxDB(serverBaseAddress, database)
                 .CreateCollector();
+
+            CollectorLog.RegisterErrorHandler((message, exception) =>
+            {
+                Console.Error.WriteLine($"[{DateTime.Now}] - {message}: {exception}");
+            });
         }
 
         public void Save(MatchedTweetReceivedEventArgs args)
