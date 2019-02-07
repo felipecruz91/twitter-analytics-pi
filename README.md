@@ -1,7 +1,10 @@
 # twitter-analytics-pi
 Twitter Analytics running in a Raspberry Pi 3 Model B
 
-.NET Core 2.2 Console App which listens for tweets given a tracking word on the Twitter Stream feed and stores them in an Influx DB database. 
+# Overview
+.NET Core 2.2 Console App which listens for tweets given a keyword on the Twitter Stream feed, performs a sentiment analysis of the tweet using Azure Text Analytics API and stores the tweet and the sentiment score in an Influx DB database. 
+
+![architectural diagram](docs/architectural-diagram.PNG)
 
 # Prerequisites
 
