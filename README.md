@@ -31,7 +31,12 @@ Set up the following configuration in the `appsettings.json` and `appsettings.*.
         "ConsumerSecret": "",
         "AccessToken": "",
         "AccessTokenSecret": ""
-      }
+      },
+      "TextAnalytics": {
+        "Name": "",
+        "Key1": "",
+        "Key2": ""
+      } 
     }
 
 
