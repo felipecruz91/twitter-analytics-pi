@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Http;
 using Microsoft.Extensions.Configuration;
 using Tweetinvi.Models;
 using TwitterAnalytics.BusinessLogic;
@@ -10,6 +11,7 @@ namespace TwitterAnalytics.Console
     {
         private const string Db = "TwitterAnalytics";
         private static IConfigurationRoot _configuration;
+        private static readonly HttpClient HttpClient = new HttpClient();
 
         private static void Main(string[] args)
         {
@@ -32,7 +34,8 @@ namespace TwitterAnalytics.Console
 
                 // Start the Twitter Stream
                 var credentials = GetTwitterCredentials();
-                var streamFactory = new StreamFactory(new TweetProcessor(repository), credentials);
+                var keys = new TextAnalyticsConfiguration(_configuration);
+                var streamFactory = new StreamFactory(new TweetProcessor(repository, keys, HttpClient), credentials);
                 var keyword = GetKeyword();
                 streamFactory.StartStream(keyword);
             }
@@ -47,7 +50,11 @@ namespace TwitterAnalytics.Console
             var keyword = Environment.GetEnvironmentVariable("keyword");
             if (string.IsNullOrEmpty(keyword))
             {
-                throw new Exception("Tracking word not set. Set the env. variable 'keyword'.");
+                keyword = _configuration["Twitter:Keyword"];
+                if (string.IsNullOrEmpty(keyword))
+                {
+                    throw new Exception("Tracking word not set. Set the env. variable 'keyword'.");
+                }
             }
 
             return keyword;

@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TwitterAnalytics.DataAccess\TwitterAnalytics.DataAccess.csproj" />
+    <ProjectReference Include="..\TwitterAnalytics.Domain\TwitterAnalytics.Domain.csproj" />
   </ItemGroup>
 
 </Project>

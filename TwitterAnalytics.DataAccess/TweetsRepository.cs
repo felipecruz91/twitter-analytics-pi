@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using InfluxDB.Collector;
 using InfluxDB.Collector.Diagnostics;
 using Tweetinvi.Events;
+using TwitterAnalytics.BusinessLogic;
 
 namespace TwitterAnalytics.DataAccess
 {
@@ -25,7 +26,7 @@ namespace TwitterAnalytics.DataAccess
             });
         }
 
-        public void Save(MatchedTweetReceivedEventArgs args)
+        public void SaveTweet(MatchedTweetReceivedEventArgs args)
         {
             Collector.Write("tweet",
                 new Dictionary<string, object>
@@ -38,6 +39,19 @@ namespace TwitterAnalytics.DataAccess
                     {"favoriteCount", args.Tweet.FavoriteCount},
                     {"created_at", args.Tweet.CreatedAt}
                 });
+        }
+
+        public void SaveSentiment(TweetSentiment tweetSentiment)
+        {
+            if (tweetSentiment != null)
+            {
+                Collector.Write("sentiment",
+                    new Dictionary<string, object>
+                    {
+                        {"fullText", tweetSentiment.FullText},
+                        {"score", tweetSentiment.Score}
+                    });
+            }
         }
     }
 }

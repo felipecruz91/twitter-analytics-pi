@@ -22,7 +22,7 @@ namespace TwitterAnalytics.BusinessLogic
 
             var stream = Stream.CreateFilteredStream();
             stream.AddTrack(keyword);
-            stream.MatchingTweetReceived += (sender, args) => { _tweetProcessor.ProcessTweet(keyword, args); };
+            stream.MatchingTweetReceived += (sender, args) => { _tweetProcessor.ProcessTweetAsync(keyword, args); };
             stream.StartStreamMatchingAllConditions();
         }
     }

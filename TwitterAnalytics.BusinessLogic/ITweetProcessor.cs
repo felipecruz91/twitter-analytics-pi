@@ -1,9 +1,10 @@
-﻿using Tweetinvi.Events;
+﻿using System.Threading.Tasks;
+using Tweetinvi.Events;
 
 namespace TwitterAnalytics.BusinessLogic
 {
     public interface ITweetProcessor
     {
-        void ProcessTweet(string track, MatchedTweetReceivedEventArgs args);
+        Task ProcessTweetAsync(string track, MatchedTweetReceivedEventArgs args);
     }
 }
