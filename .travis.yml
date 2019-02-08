@@ -1,21 +1,21 @@
 language: csharp
 
-mono: none
+mono: 5.12.0
 sudo: required
 dist: xenial
 dotnet: 2.2
 
 env:
     global:
+        - DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
         - DOTNET_CLI_TELEMETRY_OPTOUT: 1
-before_script:
-    - dotnet add package OpenCover --version 4.6.519
 
 script:
     - dotnet restore
     - dotnet build TwitterAnalytics.sln -c Release
-    - dotnet test -c Release  /p:CollectCoverage=true /p:CoverletOutputFormat=opencover 
-    - ./OpenCover.4.6.519/tools/OpenCover.Console.exe -target:"dotnet" -targetargs:"test .\TwitterAnalytics.BusinessLogic.UnitTests/TwitterAnalytics.BusinessLogic.UnitTests.csproj --no-build -c Release /p:codecov=true" /p:Threshold=80 -register:user -oldstyle -safemode:off -returntargetcode -output:coverage.xml 
+    - dotnet test -c Release .\TwitterAnalytics.BusinessLogic.UnitTests/TwitterAnalytics.BusinessLogic.UnitTests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Threshold=80
 
 after_script:
-        - bash <(curl -s https://codecov.io/bash)
+    - curl -s https://codecov.io/bash > codecov
+    - chmod +x codecov
+    - ./codecov -f "*opencover.xml"
