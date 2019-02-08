@@ -9,7 +9,7 @@ env:
     global:
         - DOTNET_CLI_TELEMETRY_OPTOUT: 1
 before_script:
-    - choco install opencover.portable
+    - dotnet add package OpenCover --version 4.6.519
 
 script:
     - dotnet restore
