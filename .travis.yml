@@ -8,11 +8,14 @@ dotnet: 2.2
 env:
     global:
         - DOTNET_CLI_TELEMETRY_OPTOUT: 1
-
+before_script:
+    - nuget install OpenCover -ExcludeVersion
+    
 script:
     - dotnet restore
     - dotnet build TwitterAnalytics.sln -c Release
     - dotnet test -c Release TwitterAnalytics.BusinessLogic.UnitTests/TwitterAnalytics.BusinessLogic.UnitTests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Threshold=80
+
 
 after_script:
         - bash <(curl -s https://codecov.io/bash)
