@@ -9,8 +9,9 @@ env:
     global:
         - DOTNET_CLI_TELEMETRY_OPTOUT: 1
 before_script:
+    - sudo apt -y install nuget
     - nuget install OpenCover -ExcludeVersion
-    
+
 script:
     - dotnet restore
     - dotnet build TwitterAnalytics.sln -c Release
