@@ -1,0 +1,9 @@
+services:
+  - docker
+
+jobs:
+  include:
+    - stage: build
+      script:
+      - docker build -t twitteranalytics .
+      - docker images
