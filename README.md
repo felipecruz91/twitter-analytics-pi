@@ -64,7 +64,7 @@ Run the container
   
 The container will start listening for tweets that contain the word `climate change` on the Twitter Stream feed and will store them in an Influx DB database.
 
-# See the tweets in your Influx DB
+# See the tweets and sentiment score in your Influx DB
 
 Go inside your Influx DB container:
 
@@ -72,7 +72,17 @@ Go inside your Influx DB container:
  
  ` >  use TwitterAnalytics`
  
+ - The tweet information is stored in the `tweet` measurement.
+ 
  ` > SELECT * FROM tweet`
  
+ - The sentiment information is stored in the `sentiment` measurement.
  
-
+ You can see the *average sentiment score* of your tweets running the following query:
+ 
+    > SELECT MEAN(score) FROM sentiment
+ 
+    name: sentiment
+    time mean
+    ---- ----
+    0    0.47096266531824166
