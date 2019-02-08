@@ -1,4 +1,6 @@
 # twitter-analytics-pi
+[![Build Status](https://travis-ci.org/felipecruz91/twitter-analytics-pi.svg?branch=master)](https://travis-ci.org/felipecruz91/twitter-analytics-pi)
+
 Twitter Analytics running in a Raspberry Pi 3 Model B
 
 # Overview
