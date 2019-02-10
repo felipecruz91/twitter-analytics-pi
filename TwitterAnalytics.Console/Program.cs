@@ -30,7 +30,8 @@ namespace TwitterAnalytics.Console
             {
                 // Set the InfluxDB metrics collector
                 var influxDbServerAddress = GetInfluxDbServerAddress();
-                var repository = new TweetsRepository(influxDbServerAddress, Db, TimeSpan.FromSeconds(2));
+                IMetricsCollectorWrapper metricsCollectorWrapper = new MetricsCollectorWrapper(influxDbServerAddress, Db, TimeSpan.FromSeconds(2));
+                var repository = new TweetsRepository(metricsCollectorWrapper);
 
                 // Start the Twitter Stream
                 var credentials = GetTwitterCredentials();
