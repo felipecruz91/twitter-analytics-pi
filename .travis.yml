@@ -13,7 +13,7 @@ env:
 script:
     - dotnet restore
     - dotnet build TwitterAnalytics.sln -c Release
-    - dotnet test -c Release TwitterAnalytics.BusinessLogic.UnitTests/TwitterAnalytics.BusinessLogic.UnitTests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Threshold=80
+    - dotnet test -c Release TwitterAnalytics.BusinessLogic.UnitTests/TwitterAnalytics.BusinessLogic.UnitTests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
 
 after_script:
     - curl -s https://codecov.io/bash > codecov
