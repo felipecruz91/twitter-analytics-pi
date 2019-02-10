@@ -4,6 +4,7 @@ using Moq;
 using NUnit.Framework;
 using Tweetinvi.Events;
 using Tweetinvi.Models;
+using TwitterAnalytics.BusinessLogic;
 
 namespace TwitterAnalytics.DataAccess.UnitTests
 {
@@ -40,6 +41,47 @@ namespace TwitterAnalytics.DataAccess.UnitTests
             };
 
             metricsCollectorWrapper.Verify(x => x.Write("tweet", fields), Times.Once);
+        }
+
+        [Test]
+        public void SaveValidSentiment()
+        {
+            // Arrange
+            var metricsCollectorWrapper = new Mock<IMetricsCollectorWrapper>();
+            var tweetsRepository = new TweetsRepository(metricsCollectorWrapper.Object);
+
+            // Act
+            var tweetSentiment = new TweetSentiment
+            {
+                FullText = "I am happy!",
+                Score = 0.99
+            };
+
+            tweetsRepository.SaveSentiment(tweetSentiment);
+
+            // Assert
+            var fields = new Dictionary<string, object>
+            {
+                {"fullText", "I am happy!"},
+                {"score", 0.99}
+            };
+
+            metricsCollectorWrapper.Verify(x => x.Write("sentiment", fields), Times.Once);
+        }
+
+        [Test]
+        public void SaveNullSentiment()
+        {
+            // Arrange
+            var metricsCollectorWrapper = new Mock<IMetricsCollectorWrapper>();
+            var tweetsRepository = new TweetsRepository(metricsCollectorWrapper.Object);
+
+            // Act
+            tweetsRepository.SaveSentiment(null);
+
+            // Assert
+            metricsCollectorWrapper.Verify(x => x.Write("sentiment", It.IsAny<Dictionary<string, object>>()),
+                Times.Never);
         }
     }
 }
