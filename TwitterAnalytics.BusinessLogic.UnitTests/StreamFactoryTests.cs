@@ -1,8 +1,5 @@
-using System;
 using Moq;
 using NUnit.Framework;
-using Tweetinvi;
-using Tweetinvi.Events;
 using Tweetinvi.Models;
 using Tweetinvi.Streaming;
 
@@ -10,11 +7,6 @@ namespace TwitterAnalytics.BusinessLogic.UnitTests
 {
     public class StreamFactoryTests
     {
-        [SetUp]
-        public void Setup()
-        {
-        }
-
         [Test]
         public void StartStreamTest()
         {
