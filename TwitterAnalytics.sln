@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitterAnalytics.Domain", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{E1CF12DE-D445-4494-A969-A7EF675FF8B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitterAnalytics.BusinessLogic.UnitTests", "TwitterAnalytics.BusinessLogic.UnitTests\TwitterAnalytics.BusinessLogic.UnitTests.csproj", "{8D3B808D-D981-4E29-AF61-F040DC9F1C9E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitterAnalytics.BusinessLogic.UnitTests", "TwitterAnalytics.BusinessLogic.UnitTests\TwitterAnalytics.BusinessLogic.UnitTests.csproj", "{8D3B808D-D981-4E29-AF61-F040DC9F1C9E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitterAnalytics.DataAccess.UnitTests", "TwitterAnalytics.DataAccess.UnitTests\TwitterAnalytics.DataAccess.UnitTests.csproj", "{BDB9E899-5B38-4F91-B05A-5E937A792186}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,12 +43,17 @@ Global
 		{8D3B808D-D981-4E29-AF61-F040DC9F1C9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8D3B808D-D981-4E29-AF61-F040DC9F1C9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8D3B808D-D981-4E29-AF61-F040DC9F1C9E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BDB9E899-5B38-4F91-B05A-5E937A792186}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BDB9E899-5B38-4F91-B05A-5E937A792186}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BDB9E899-5B38-4F91-B05A-5E937A792186}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BDB9E899-5B38-4F91-B05A-5E937A792186}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{8D3B808D-D981-4E29-AF61-F040DC9F1C9E} = {E1CF12DE-D445-4494-A969-A7EF675FF8B8}
+		{BDB9E899-5B38-4F91-B05A-5E937A792186} = {E1CF12DE-D445-4494-A969-A7EF675FF8B8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A2E76F30-073B-444F-89C4-589D22D5D5EA}
