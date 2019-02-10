@@ -35,7 +35,7 @@ namespace TwitterAnalytics.Console
                 // Start the Twitter Stream
                 var credentials = GetTwitterCredentials();
                 var keys = new TextAnalyticsConfiguration(_configuration);
-                var streamFactory = new StreamFactory(new TweetProcessor(repository, keys, HttpClient), credentials);
+                var streamFactory = new StreamFactory(new TweetProcessor(repository, keys, HttpClient), credentials, null);
                 var keyword = GetKeyword();
                 streamFactory.StartStream(keyword);
             }
